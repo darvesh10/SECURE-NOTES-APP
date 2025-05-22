@@ -5,7 +5,12 @@
   <title>Login | Secure Notes</title>
 </head>
 <body>
-  <h1>Welcome to Secure Notes App</h1>
-  <p>This is login page</p>
+  <h2>Login</h2>
+  <from method="POST" action="/login">
+<input type="text" name="username" placeholder="Username" required/><br />
+<input type="text" name="password" placeholder="Passowrd" required/><br />
+<button type="submit">Login</button>
+  </from>
+<p>Don't have an account? <a href="/register">Register here</a></p>
 </body>
 </html>
