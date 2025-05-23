@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Note</title></head>
+<body>
+  <h1>Edit Note</h1>
+  <form method="POST" action="/notes/edit/<%= note._id %>">
+    <input type="text" name="title" value="<%= note.title %>" required /><br />
+    <textarea name="body" required><%= note.body %></textarea><br />
+    <button type="submit">Update</button>
+  </form>
+  <a href="/notes/dashboard">Back to Dashboard</a>
+</body>
+</html>

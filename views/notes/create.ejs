@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Create Note</title></head>
+<body>
+  <h1>Create Note</h1>
+  <form method="POST" action="/notes/create">
+    <input type="text" name="title" placeholder="Title" required /><br />
+    <textarea name="body" placeholder="Note Body" required></textarea><br />
+    <button type="submit">Save</button>
+  </form>
+  <a href="/notes/dashboard">Back to Dashboard</a>
+</body>
+</html>

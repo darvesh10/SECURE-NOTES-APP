@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Notes</title>
+</head>
+<body>
+    <h1>Welcome to your Dashboard</h1>
+    <a href="/notes/create">+ Create New Note</a> | <a href="/logout">Logout</a>
+    <ul>
+        <% notes.forEach(note => { %>
+          <li>
+            <strong><%= note.title %></strong><br />
+            <%= note.body %><br />
+            <a href="/notes/edit/<%= note._id %>">Edit</a> |
+            <form method="POST" action="/notes/delete/<%= note._id %>" style="display:inline;">
+              <button type="submit">Delete</button>
+            </form>
+          </li>
+        <% }) %>
+      </ul>
+
+
+</body>
+</html>
