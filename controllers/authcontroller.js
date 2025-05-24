@@ -1,90 +1,74 @@
-const user = require("../models/user");
+// controllers/authController.js
+const User = require('../models/User');
 
-//show register page
+// Show register page
 exports.showRegister = (req, res) => {
-  res.render("auth/register");
+  res.render('auth/register');
 };
 
-//show login page
+// Show login page
 exports.showLogin = (req, res) => {
-  res.render("auth/login");
+  res.render('auth/login');
 };
 
-//register new user
+// Register new user
+// Register new user
 exports.registerUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const existingUser = await user.findOne({ username });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.send("user already exists");
+      req.flash('error_msg', 'Username already taken.');
+      return res.redirect('/register'); // redirect instead of send
     }
 
-    const newUser = new user({ username, password });
+    const newUser = new User({ username, password });
     await newUser.save();
-    req.session.userId = newUser._id;
-    res.redirect("/notes/dashboard");
+
+    req.flash('success_msg', 'Registered successfully! Please log in.');
+    res.redirect('/login'); // redirect to login page with success message
   } catch (err) {
     console.log(err);
-    res.send("error during registration");
+    req.flash('error_msg', 'Error during registration. Try again.');
+    res.redirect('/register');
   }
 };
 
-//login  user
+
+// Login user
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
-  console.log('Login attempt for:', username); // Debug
-  
+
+  console.log("Login attempt:", username, password); // 👈 Add this
+
   try {
-    const foundUser = await user.findOne({ username });
-    console.log('User found:', foundUser ? foundUser.username : 'None'); // Debug
-    
-    if (!foundUser) {
-      console.log('User not found');
-      return res.render("auth/login", { 
-        error: "Invalid username or password",
-        username 
-      });
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      console.log("User not found");
+      return res.send('Invalid credentials');
     }
 
-    console.log('Comparing password...'); // Debug
-    const isMatch = await foundUser.matchPassword(password);
+    const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      console.log('Password mismatch');
-      return res.render("auth/login", { 
-        error: "Invalid username or password",
-        username 
-      });
+      console.log("Password mismatch");
+      return res.send('Invalid credentials');
     }
 
-    // Save session and THEN redirect
-    req.session.userId = foundUser._id;
-    req.session.username = foundUser.username;
-    
-    // Save session before redirect
-    req.session.save(err => {
-      if (err) {
-        console.log('Session save error:', err);
-        return res.render("auth/login", { 
-          error: "Login failed",
-          username 
-        });
-      }
-      console.log('Session saved, redirecting...');
-      res.redirect("/notes/dashboard");
-    });
-    
+    req.session.userId = user._id;
+    console.log("Login successful"); 
+    res.redirect('/notes/dashboard');
   } catch (err) {
-    console.error('Login error:', err);
-    res.render("auth/login", {
-      error: "Login failed. Please try again.",
-      username
-    });
+    console.error(err);
+    res.send('Error during login');
   }
 };
-//logout user
+
+
+// Logout user
 exports.logoutUser = (req, res) => {
   req.session.destroy(() => {
-    res.redirect("/login");
+    res.redirect('/login');
   });
 };

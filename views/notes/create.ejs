@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head><title>Create Note</title></head>
+<head>
+  <%- include('../partials/header') %>
+  <title>Create Note</title>
+  <style>
+    .centered-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    form {
+      width: 100%;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    textarea {
+      height: 200px;
+    }
+    button {
+      margin: 8px 0;
+      padding: 8px 16px;
+    }
+  </style>
+</head>
 <body>
-  <h1>Create Note</h1>
-  <form method="POST" action="/notes/create">
-    <input type="text" name="title" placeholder="Title" required /><br />
-    <textarea name="body" placeholder="Note Body" required></textarea><br />
-    <button type="submit">Save</button>
-  </form>
-  <a href="/notes/dashboard">Back to Dashboard</a>
+  <div class="centered-container">
+    <h1>Create Note</h1>
+    <form method="POST" action="/notes/create">
+      <input type="text" name="title" placeholder="Title" required /><br />
+      <textarea name="body" placeholder="Note Body" required></textarea><br />
+      <button type="submit">Save</button>
+    </form>
+    
+    <a href="/notes/dashboard">Back to Dashboard</a>
+  </div>
+  <%- include('../partials/footer') %>
 </body>
 </html>

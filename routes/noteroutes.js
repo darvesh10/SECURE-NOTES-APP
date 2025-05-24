@@ -1,15 +1,16 @@
+// routes/notesRoutes.js
 const express = require('express');
 const router = express.Router();
-const{
-    dashboard,
-    showCreate,
-    createNote,
-    showEdit,
-    updateNote,
-    deleteNote,
-} = require('../controllers/notescontroller');
+const {
+  dashboard,
+  showCreate,
+  createNote,
+  showEdit,
+  updateNote,
+  deleteNote,
+} = require('../controllers/notesController');
 
-const { ensureAuth } = require('../middleware/authmiddleware');
+const { ensureAuth } = require('../middleware/authMiddleware');
 
 router.get('/dashboard', ensureAuth, dashboard);
 router.get('/create', ensureAuth, showCreate);

@@ -1,26 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Notes</title>
+  <%- include('../partials/header') %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Notes</title>
+  <style>
+    .centered-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .note-actions {
+      margin: 10px 0;
+    }
+    .note-list {
+      width: 100%;
+      list-style: none;
+      padding: 0;
+    }
+    .note-item {
+      background: #f8f9fa;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .action-links {
+      margin-top: 10px;
+    }
+    button {
+      background-color: #06127c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #050b5a;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+  <div class="centered-container">
     <h1>Welcome to your Dashboard</h1>
-    <a href="/notes/create">+ Create New Note</a> | <a href="/logout">Logout</a>
-    <ul>
-        <% notes.forEach(note => { %>
-          <li>
-            <strong><%= note.title %></strong><br />
-            <%= note.body %><br />
+    <div class="note-actions">
+      <a href="/notes/create">+ Create New Note</a> | <a href="/logout">Logout</a>
+    </div>
+    
+    <ul class="note-list">
+      <% notes.forEach(note => { %>
+        <li class="note-item">
+          <strong><%= note.title %></strong><br />
+          <p><%= note.body %></p>
+          <div class="action-links">
             <a href="/notes/edit/<%= note._id %>">Edit</a> |
             <form method="POST" action="/notes/delete/<%= note._id %>" style="display:inline;">
               <button type="submit">Delete</button>
             </form>
-          </li>
-        <% }) %>
-      </ul>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 
-
+  <%- include('../partials/footer') %>
 </body>
 </html>

@@ -5,8 +5,9 @@ const MongoStore = require("connect-mongo");
 const path = require("path");
 const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
-const authRoutes = require('./routes/authroutes');
-const notesRoutes = require('./routes/noteroutes');
+const authRoutes = require('./routes/authRoutes');
+const notesRoutes = require('./routes/noteRoutes');
+const flash = require('connect-flash');
 
 dotenv.config();
 const app = express();
@@ -16,23 +17,26 @@ connectDB();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(flash());
 
 //session
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'fallback-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ 
-      mongoUrl: process.env.MONGODB_URI,
-      ttl: 24 * 60 * 60 // 1 day
-    }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true
-    }
-  })
-);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI
+  }),
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+// Global variables for EJS
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
 
 // VIEW ENGINE
 app.set("view engine", "ejs");
@@ -42,22 +46,12 @@ app.set("views", path.join(__dirname, "views"));
 app.use('/', authRoutes);
 app.use('/notes', notesRoutes);
 
-// Add these before app.listen()
-
-// Debug route to check session
-app.get('/debug-session', (req, res) => {
-  console.log('Current session:', req.session);
-  res.json({
-    session: req.session,
-    cookies: req.headers.cookie || 'No cookies found'
-  });
-});
-
-// Test route to manually set session
-app.get('/force-login', (req, res) => {
-  req.session.userId = 'test123';
-  req.session.username = 'testuser';
-  res.redirect('/notes/dashboard');
+app.get('/check', (req, res) => {
+  if (req.session.userId) {
+    res.send("You are logged in");
+  } else {
+    res.send("You are NOT logged in");
+  }
 });
 
 app.listen(PORT, () => {
