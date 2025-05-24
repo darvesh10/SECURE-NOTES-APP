@@ -1,5 +1,5 @@
 // controllers/notesController.js
-const Note = require('../models/Note');
+const Note = require('../models/note');
 
 exports.dashboard = async (req, res) => {
   const notes = await Note.find({ owner: req.session.userId }).sort({ createdAt: -1 });

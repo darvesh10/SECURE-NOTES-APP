@@ -10,7 +10,7 @@ const {
   deleteNote,
 } = require('../controllers/notesController');
 
-const { ensureAuth } = require('../middleware/authMiddleware');
+const { ensureAuth } = require('../middleware/authmiddleware');
 
 router.get('/dashboard', ensureAuth, dashboard);
 router.get('/create', ensureAuth, showCreate);
