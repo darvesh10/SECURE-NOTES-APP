@@ -8,7 +8,7 @@ const {
   showEdit,
   updateNote,
   deleteNote,
-} = require('../controllers/notesController');
+} = require('../controllers/notescontroller');
 
 const { ensureAuth } = require('../middleware/authmiddleware');
 
