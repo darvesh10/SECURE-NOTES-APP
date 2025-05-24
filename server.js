@@ -6,7 +6,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
 const authRoutes = require('./routes/authroutes.js');
-const notesRoutes = require('./routes/noteRoutes');
+const notesRoutes = require('./routes/noteroutes.js');
 const flash = require('connect-flash');
 
 dotenv.config();
