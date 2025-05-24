@@ -5,7 +5,7 @@ const MongoStore = require("connect-mongo");
 const path = require("path");
 const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
-const authRoutes = require('./routes/authRoutes.js');
+const authRoutes = require('./routes/authroutes.js');
 const notesRoutes = require('./routes/noteRoutes');
 const flash = require('connect-flash');
 
